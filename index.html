@@ -186,17 +186,64 @@
 
   <!-- Main Content -->
   <main>
-    <!-- Dashboard Section -->
-    <section id="dashboard">
-      <h2>Welcome to Your Task Manager</h2>
-      <p>
-        Organize your life, meet your deadlines, and accomplish your goals with ease. 
-        Use this system to manage tasks, track progress, and enhance productivity.
-      </p>
-      <p>
-        Use the navigation bar above to access your profile, add tasks, and adjust settings.
-      </p>
-    </section>
+<!-- Dashboard Section -->
+<section id="dashboard">
+  <h2>Welcome to Your Task Manager</h2>
+  <p><b><i>Manage your tasks efficiently, track progress, and achieve your goals.</b></i></p>
+
+  <!-- Task Overview -->
+  <div class="dashboard-stats">
+    <div class="stat">
+      <h3>Total Tasks</h3>
+      <p id="totalTasks">0</p>
+    </div>
+    <div class="stat">
+      <h3>Completed Tasks</h3>
+      <p id="completedTasks">0</p>
+    </div>
+    <div class="stat">
+      <h3>Pending Tasks</h3>
+      <p id="pendingTasks">0</p>
+    </div>
+    <div class="stat">
+      <h3>Overdue Tasks</h3>
+      <p id="overdueTasks">0</p>
+    </div>
+  </div>
+
+  <!-- Upcoming Tasks -->
+  <div class="upcoming-tasks">
+    <h3>Upcoming Tasks</h3>
+    <ul id="upcomingTasksList">
+      <!-- Upcoming tasks will be dynamically listed here -->
+    </ul>
+  </div>
+
+  <!-- Task Statistics (Bar or Pie Chart Placeholder) -->
+  <div class="task-stats">
+    <h3>Task Completion Stats</h3>
+    <div id="taskCompletionChart">
+      <!-- Placeholder for a chart like progress bars or a pie chart -->
+      <p>Chart/Graph Placeholder</p>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <h3>Recent Activity</h3>
+    <ul id="recentActivityList">
+      <!-- List of recent task updates will go here -->
+    </ul>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <button onclick="showSection('tasks')">Add New Task</button>
+    <button onclick="clearCompletedTasks()">Clear Completed Tasks</button>
+    <button onclick="filterTasks('pending')">Show Pending Tasks</button>
+  </div>
+</section>
+
 
     <!-- Tasks Section -->
     <section id="tasks" class="hidden">
@@ -225,31 +272,81 @@
       </div>
     </section>
 
-    <!-- Profile Section -->
-    <section id="profile" class="hidden">
-      <h2>Your Profile</h2>
-      <form onsubmit="saveProfile(event)">
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Enter your username" required>
-        <label for="email">Email:</label>
-        <input type="email" id="email" placeholder="Enter your email" required>
-        <button type="submit">Save Profile</button>
-      </form>
-    </section>
+<!-- Profile Section -->
+<section id="profile" class="hidden">
+  <h2>Your Profile</h2>
+  
+  <!-- Profile Picture Upload -->
+  <div class="profile-picture">
+    <label for="profilePicture">Profile Picture:</label>
+    <input type="file" id="profilePicture" accept="image/*">
+    <img id="profileImage" src="" alt="Profile Picture" style="max-width: 150px; display: none;">
+  </div>
 
-    <!-- Settings Section -->
-    <section id="settings" class="hidden">
-      <h2>Settings</h2>
-      <form onsubmit="saveSettings(event)">
-        <label for="theme">Theme:</label>
-        <select id="theme">
-          <option value="dark">Dark Gothic</option>
-          <option value="classic">Classic</option>
-        </select>
-        <button type="submit">Save Settings</button>
-      </form>
-    </section>
-  </main>
+  <!-- User Bio -->
+  <form onsubmit="saveProfile(event)">
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter your username" required>
+    
+    <label for="email">Email:</label>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    
+    <label for="bio">Bio:</label>
+    <textarea id="bio" placeholder="Write a short bio about yourself" rows="4"></textarea>
+    
+    <button type="submit">Save Profile</button>
+  </form>
+
+ 
+  <!-- Change Theme -->
+  <div class="theme-preference">
+    <label for="theme">Theme:</label>
+    <select id="theme">
+      <option value="dark">Dark Mode</option>
+      <option value="light">Light Mode</option>
+    </select>
+    <button onclick="saveTheme()">Save Theme</button>
+  </div>
+</section>
+
+
+<!-- Settings Section -->
+<section id="settings" class="hidden">
+  <h2>Settings</h2>
+  <form onsubmit="saveSettings(event)">
+    <!-- Theme Selection -->
+    <label for="theme">Theme:</label>
+    <select id="theme">
+      <option value="dark">Dark Gothic</option>
+      <option value="light">Light Theme</option>
+    </select>
+
+    <!-- Task Sorting -->
+    <label for="taskSort">Sort Tasks By:</label>
+    <select id="taskSort">
+      <option value="priority">Priority</option>
+      <option value="dueDate">Due Date</option>
+      <option value="status">Status</option>
+    </select>
+
+    <!-- Notification Settings -->
+    <label for="notifications">Enable Notifications:</label>
+    <select id="notifications">
+      <option value="enabled">Enabled</option>
+      <option value="disabled">Disabled</option>
+    </select>
+
+    <!-- Task View Preferences -->
+    <label for="taskView">Task View:</label>
+    <select id="taskView">
+      <option value="list">List View</option>
+      <option value="board">Board View</option>
+    </select>
+
+    <button type="submit">Save Settings</button>
+  </form>
+</section>
+
 
   <!-- Footer -->
   <footer>
@@ -288,18 +385,12 @@
 
     function addTask(event) {
       event.preventDefault();
-      const taskInput = document.getElementById('task');
-      const prioritySelect = document.getElementById('priority');
-      const task = {
-        description: taskInput.value,
-        completed: false,
-        priority: prioritySelect.value
-      };
-      tasks.push(task);
+      const taskDescription = document.getElementById('task').value;
+      const priority = document.getElementById('priority').value;
+      tasks.push({ description: taskDescription, priority, completed: false });
       localStorage.setItem('tasks', JSON.stringify(tasks));
       renderTasks();
-      taskInput.value = '';
-      prioritySelect.value = 'low';
+      document.getElementById('task').value = '';
     }
 
     function toggleTaskStatus(index) {
@@ -308,52 +399,48 @@
       renderTasks();
     }
 
-    function deleteTask(index) {
-      if (confirm('Are you sure you want to delete this task?')) {
-        tasks.splice(index, 1);
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        renderTasks();
-      }
-    }
-
     function editTask(index) {
       const newDescription = prompt('Edit Task:', tasks[index].description);
-      if (newDescription !== null) {
+      if (newDescription) {
         tasks[index].description = newDescription;
         localStorage.setItem('tasks', JSON.stringify(tasks));
         renderTasks();
       }
     }
 
-    function saveProfile(event) {
-      event.preventDefault();
-      const username = document.getElementById('username').value;
-      const email = document.getElementById('email').value;
-      alert(`Profile saved: ${username}, ${email}`);
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
     }
 
-    function saveSettings(event) {
-      event.preventDefault();
-      const theme = document.getElementById('theme').value;
-      document.body.style.backgroundColor = theme === 'dark' ? '#000' : '#fff';
-      localStorage.setItem('theme', theme);
-    }
-
-    function filterTasks(status) {
-      filteredTasks = status;
+    function filterTasks(filter) {
+      filteredTasks = filter;
       renderTasks();
     }
 
     function sortTasksByPriority() {
       tasks.sort((a, b) => {
-        const priorityOrder = { low: 1, medium: 2, high: 3 };
-        return priorityOrder[b.priority] - priorityOrder[a.priority];
+        const priorities = { low: 1, medium: 2, high: 3 };
+        return priorities[b.priority] - priorities[a.priority];
       });
       localStorage.setItem('tasks', JSON.stringify(tasks));
       renderTasks();
     }
 
-    // Initial render
+    function saveProfile(event) {
+      event.preventDefault();
+      alert('Profile saved!');
+    }
+
+    function saveSettings(event) {
+      event.preventDefault();
+      const theme = document.getElementById('theme').value;
+      document.body.classList.toggle('dark', theme === 'dark');
+      alert('Settings saved!');
+    }
+
+    // Initialize the page
     renderTasks();
   </script>
 </body>
