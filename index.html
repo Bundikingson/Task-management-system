@@ -186,54 +186,43 @@
 
   <!-- Main Content -->
   <main>
+<!-- Dashboard Section -->
 <section id="dashboard">
-  <h2>Welcome to Your Gothic Task Manager</h2>
-  <p><b><i>Stay organized, stay on top of your tasks, and achieve your goals with ease! Our Task Management System is designed to help you track and manage your to-do list efficiently.</b></i></p>
+  <h2>Welcome to Your Task Manager</h2>
+  <p><b><i>Manage your tasks efficiently, track progress, and achieve your goals.</b></i></p>
 
-  <!-- Purpose of the Task Management System -->
-  <div class="purpose">
-    <h3>Why Use a Task Management System?</h3>
-    <p>Our Task Management System allows you to keep all your tasks in one place, giving you the tools to manage deadlines, track progress, and ensure nothing falls through the cracks.</p>
-    <ul>
-      <li><strong>Organize Tasks</strong>: Categorize tasks by priority and due date.</li>
-      <li><strong>Track Progress</strong>: Easily mark tasks as complete or pending and keep track of overdue tasks.</li>
-      <li><strong>Boost Productivity</strong>: Plan your work, stay focused, and stay on top of your goals.</li>
-      <li><strong>Never Miss a Deadline</strong>: Set deadlines and manage your schedule efficiently.</li>
+ 
+
+  <!-- Upcoming Tasks -->
+  <div class="upcoming-tasks">
+    <h3>Upcoming Tasks</h3>
+    <ul id="upcomingTasksList">
+      <!-- Upcoming tasks will be dynamically listed here -->
     </ul>
   </div>
 
-  <!-- How to Use the Task Management System -->
-  <div class="how-to-use">
-    <h3>How to Use the Task Management System</h3>
-    <ol>
-      <li><strong>Add Tasks</strong>: Use the "Add New Task" button to create a new task. Enter a description, set the priority, and define the due date.</li>
-      <li><strong>View and Manage Tasks</strong>: View all your tasks in the dashboard or filter them by status (completed, pending, overdue). You can also sort them by priority or due date.</li>
-      <li><strong>Update Task Status</strong>: Mark tasks as completed when done, or update them if the status changes.</li>
-      <li><strong>Delete Tasks</strong>: Once a task is completed or no longer needed, you can delete it to keep your task list tidy.</li>
-      <li><strong>Track Overdue Tasks</strong>: Overdue tasks will be highlighted, ensuring you're always aware of what's urgent.</li>
-    </ol>
+  <!-- Task Statistics (Bar or Pie Chart Placeholder) -->
+  <div class="task-stats">
+    <h3>Task Completion Stats</h3>
+    <div id="taskCompletionChart">
+      <!-- Placeholder for a chart like progress bars or a pie chart -->
+      <p>Chart/Graph Placeholder</p>
+    </div>
   </div>
 
-  <!-- Tips for Effective Task Management -->
-  <div class="productivity-tips">
-    <h3>Productivity Tips</h3>
-    <p>Here are some productivity tips to get the most out of your Task Manager:</p>
-    <ul>
-      <li><strong>Break large tasks into smaller ones</strong> to make them more manageable.</li>
-      <li><strong>Prioritize</strong> tasks based on urgency and importance.</li>
-      <li><strong>Review your tasks daily</strong> to keep your goals on track.</li>
-      <li><strong>Use the Pomodoro Technique</strong> to work in focused intervals with short breaks.</li>
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <h3>Recent Activity</h3>
+    <ul id="recentActivityList">
+      <!-- List of recent task updates will go here -->
     </ul>
   </div>
 
-  <!-- Quick Actions Section -->
+  <!-- Quick Actions -->
   <div class="quick-actions">
-    <h3>Quick Actions</h3>
     <button onclick="showSection('tasks')">Add New Task</button>
-    <button onclick="filterTasks('all')">Show All Tasks</button>
-    <button onclick="filterTasks('completed')">Show Completed Tasks</button>
+    <button onclick="clearCompletedTasks()">Clear Completed Tasks</button>
     <button onclick="filterTasks('pending')">Show Pending Tasks</button>
-    <button onclick="filterTasks('overdue')">Show Overdue Tasks</button>
   </div>
 </section>
 
@@ -265,43 +254,17 @@
       </div>
     </section>
 
-<!-- Profile Section -->
-<section id="profile" class="hidden">
-  <h2>Your Profile</h2>
-  
-  <!-- Profile Picture Upload -->
-  <div class="profile-picture">
-    <label for="profilePicture">Profile Picture:</label>
-    <input type="file" id="profilePicture" accept="image/*">
-    <img id="profileImage" src="" alt="Profile Picture" style="max-width: 150px; display: none;">
-  </div>
-
-  <!-- User Bio -->
-  <form onsubmit="saveProfile(event)">
-    <label for="username">Username:</label>
-    <input type="text" id="username" placeholder="Enter your username" required>
-    
-    <label for="email">Email:</label>
-    <input type="email" id="email" placeholder="Enter your email" required>
-    
-    <label for="bio">Bio:</label>
-    <textarea id="bio" placeholder="Write a short bio about yourself" rows="4"></textarea>
-    
-    <button type="submit">Save Profile</button>
-  </form>
-
- 
-  <!-- Change Theme -->
-  <div class="theme-preference">
-    <label for="theme">Theme:</label>
-    <select id="theme">
-      <option value="dark">Dark Mode</option>
-      <option value="light">Light Mode</option>
-    </select>
-    <button onclick="saveTheme()">Save Theme</button>
-  </div>
-</section>
-
+    <!-- Profile Section -->
+    <section id="profile" class="hidden">
+      <h2>Your Profile</h2>
+      <form onsubmit="saveProfile(event)">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your username" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <button type="submit">Save Profile</button>
+      </form>
+    </section>
 
 <!-- Settings Section -->
 <section id="settings" class="hidden">
@@ -436,6 +399,5 @@
     // Initialize the page
     renderTasks();
   </script>
-<script src="profile.js"></script> <!-- Link to the JavaScript file -->
 </body>
 </html>
