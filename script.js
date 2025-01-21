@@ -1,146 +1,89 @@
-// JavaScript for Task Management System
+<script>
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  let filteredTasks = 'all';
 
-// DOM Elements
-const dashboardSection = document.getElementById("dashboard");
-const tasksSection = document.getElementById("tasks");
-const settingsSection = document.getElementById("settings");
-const profileSection = document.getElementById("profile");
-const themeSelect = document.getElementById("theme");
-const taskList = document.getElementById("taskList");
-const profileImageInput = document.getElementById("profileImageInput");
-const profileImage = document.getElementById("profileImage");
-const bioInput = document.getElementById("bio");
-const totalTasks = document.getElementById("totalTasks");
-const completedTasks = document.getElementById("completedTasks");
-const pendingTasks = document.getElementById("pendingTasks");
+  function showSection(sectionId) {
+    document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
+    document.getElementById(sectionId).classList.remove('hidden');
+  }
 
-// Theme Toggle
-const currentTheme = localStorage.getItem("theme") || "dark";
-document.body.classList.add(currentTheme);
-themeSelect.value = currentTheme;
+  function renderTasks() {
+    const taskList = document.getElementById('task-list');
+    taskList.innerHTML = '';
+    const filtered = tasks.filter(task => {
+      if (filteredTasks === 'completed') return task.completed;
+      if (filteredTasks === 'pending') return !task.completed;
+      return true;
+    });
+    filtered.forEach((task, index) => {
+      const taskItem = document.createElement('li');
+      taskItem.innerHTML = `
+        <span style="text-decoration: ${task.completed ? 'line-through' : 'none'}">${task.description} (Priority: ${task.priority})</span>
+        <button onclick="toggleTaskStatus(${index})">${task.completed ? 'Undo' : 'Complete'}</button>
+        <button onclick="editTask(${index})">Edit</button>
+        <button onclick="deleteTask(${index})">Delete</button>
+      `;
+      taskList.appendChild(taskItem);
+    });
+  }
 
-themeSelect.addEventListener("change", (event) => {
-  const selectedTheme = event.target.value;
-  document.body.classList.remove("light", "dark");
-  document.body.classList.add(selectedTheme);
-  localStorage.setItem("theme", selectedTheme);
-});
-
-// Section Navigation
-const navLinks = document.querySelectorAll("nav ul li a");
-
-navLinks.forEach(link => {
-  link.addEventListener("click", (event) => {
+  function addTask(event) {
     event.preventDefault();
-    const targetSection = event.target.getAttribute("href").substring(1);
-    showSection(targetSection);
-  });
-});
-
-function showSection(sectionId) {
-  dashboardSection.classList.add("hidden");
-  tasksSection.classList.add("hidden");
-  settingsSection.classList.add("hidden");
-  profileSection.classList.add("hidden");
-  
-  if (sectionId === "dashboard") {
-    dashboardSection.classList.remove("hidden");
-  } else if (sectionId === "tasks") {
-    tasksSection.classList.remove("hidden");
-  } else if (sectionId === "settings") {
-    settingsSection.classList.remove("hidden");
-  } else if (sectionId === "profile") {
-    profileSection.classList.remove("hidden");
+    const taskDescription = document.getElementById('task').value;
+    const priority = document.getElementById('priority').value;
+    tasks.push({ description: taskDescription, priority, completed: false });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTasks();
+    document.getElementById('task').value = '';
   }
-}
 
-// Task Management
-const taskForm = document.getElementById("taskForm");
-const taskTitleInput = document.getElementById("taskTitle");
-const taskDescriptionInput = document.getElementById("taskDescription");
-const taskDueDateInput = document.getElementById("taskDueDate");
-const taskPriorityInput = document.getElementById("taskPriority");
-const taskStatusInput = document.getElementById("taskStatus");
-
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-function displayTasks() {
-  taskList.innerHTML = "";
-  tasks.forEach((task, index) => {
-    const taskItem = document.createElement("li");
-    taskItem.innerHTML = `
-      <span>${task.title}</span>
-      <span>${task.dueDate}</span>
-      <span>${task.priority}</span>
-      <span>${task.status}</span>
-      <button onclick="deleteTask(${index})">Delete</button>
-    `;
-    taskList.appendChild(taskItem);
-  });
-}
-
-taskForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  
-  const newTask = {
-    title: taskTitleInput.value,
-    description: taskDescriptionInput.value,
-    dueDate: taskDueDateInput.value,
-    priority: taskPriorityInput.value,
-    status: taskStatusInput.value,
-  };
-
-  tasks.push(newTask);
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-
-  taskForm.reset();
-  displayTasks();
-  updateTaskStats();
-});
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  displayTasks();
-  updateTaskStats();
-}
-
-function updateTaskStats() {
-  totalTasks.textContent = tasks.length;
-  completedTasks.textContent = tasks.filter(task => task.status === "Completed").length;
-  pendingTasks.textContent = tasks.filter(task => task.status !== "Completed").length;
-}
-
-displayTasks();
-updateTaskStats();
-
-// Profile Section
-const profilePictureInput = document.getElementById("profilePictureInput");
-const profilePicture = document.getElementById("profileImage");
-const bioText = document.getElementById("bioText");
-
-profilePictureInput.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      profilePicture.src = reader.result;
-      localStorage.setItem("profileImage", reader.result);
-    };
-    reader.readAsDataURL(file);
+  function toggleTaskStatus(index) {
+    tasks[index].completed = !tasks[index].completed;
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTasks();
   }
-});
 
-const savedImage = localStorage.getItem("profileImage");
-if (savedImage) {
-  profilePicture.src = savedImage;
-}
+  function editTask(index) {
+    const newDescription = prompt('Edit Task:', tasks[index].description);
+    if (newDescription) {
+      tasks[index].description = newDescription;
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
+    }
+  }
 
-bioInput.addEventListener("input", () => {
-  localStorage.setItem("bio", bioInput.value);
-});
+  function deleteTask(index) {
+    tasks.splice(index, 1);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTasks();
+  }
 
-const savedBio = localStorage.getItem("bio");
-if (savedBio) {
-  bioInput.value = savedBio;
-}
+  function filterTasks(filter) {
+    filteredTasks = filter;
+    renderTasks();
+  }
+
+  function sortTasksByPriority() {
+    tasks.sort((a, b) => {
+      const priorities = { low: 1, medium: 2, high: 3 };
+      return priorities[b.priority] - priorities[a.priority];
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTasks();
+  }
+
+  function saveProfile(event) {
+    event.preventDefault();
+    alert('Profile saved!');
+  }
+
+  function saveSettings(event) {
+    event.preventDefault();
+    const theme = document.getElementById('theme').value;
+    document.body.classList.toggle('dark', theme === 'dark');
+    alert('Settings saved!');
+  }
+
+  // Initialize the page
+  renderTasks();
+</script>

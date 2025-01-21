@@ -1,246 +1,228 @@
-/* General Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Georgia", serif;
-  margin: 0;
-  padding: 0;
-  background: #000000;
-  color: #ffffff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
 }
 
-header {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 1.5rem;
+h1 {
   text-align: center;
-  border-bottom: 3px solid #ff0000;
+  color: #4CAF50;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 2.5rem;
-  color: #ff0000;
-  text-shadow: 2px 2px 5px #000;
-}
-
-nav ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  margin: 1rem 0 0;
-}
-
-nav ul li {
-  margin: 0 1rem;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: #ff0000;
-  font-weight: bold;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-nav ul li a:hover {
-  color: #ffffff;
-}
-
-main {
-  flex-grow: 1;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.hidden {
+section.hidden {
   display: none;
 }
 
-section {
-  background: rgba(0, 0, 0, 0.9);
-  margin: 1rem 0;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.4);
+nav {
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-h2 {
-  margin-top: 0;
-  color: #ff0000;
-  text-shadow: 1px 1px 3px #000;
+nav button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+nav button:hover {
+  background-color: #45a049;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 form label {
-  margin: 0.5rem 0 0.2rem;
   display: block;
-}
-
-form input,
-form textarea,
-form select,
-form button {
-  width: 100%;
-  padding: 0.7rem;
-  margin-bottom: 1rem;
-  border: none;
-  border-radius: 5px;
-}
-
-form input,
-form textarea,
-form select {
-  background-color: #222;
-  color: #fff;
-}
-
-form button {
-  background-color: #ff0000;
-  color: #ffffff;
-  cursor: pointer;
+  margin-bottom: 8px;
   font-weight: bold;
-  transition: background 0.3s ease;
+}
+
+form input[type="text"],
+form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+form input[type="text"]:focus,
+form select:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+form button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
 }
 
 form button:hover {
-  background-color: #aa0000;
+  background-color: #45a049;
 }
 
-.task-list ul {
+ul#task-list {
   list-style: none;
   padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.task-list ul li {
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0.5rem 0;
-  padding: 1rem;
-  border-radius: 5px;
+ul#task-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.task-list button {
-  background: #f05454;
-  border: none;
-  color: #ffffff;
-  padding: 0.3rem 0.8rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
+ul#task-list li:last-child {
+  border-bottom: none;
 }
 
-.task-list button:hover {
-  background: #d94343;
+ul#task-list span {
+  flex-grow: 1;
+}
+
+ul#task-list button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+ul#task-list button:hover {
+  background-color: #e53935;
+}
+
+ul#task-list button:first-of-type {
+  background-color: #2196F3;
+}
+
+ul#task-list button:first-of-type:hover {
+  background-color: #1e88e5;
+}
+
+ul#task-list button:nth-of-type(2) {
+  background-color: #FFC107;
+}
+
+ul#task-list button:nth-of-type(2):hover {
+  background-color: #ffb300;
+}
+
+ul#task-list li span[style="text-decoration: line-through"] {
+  text-decoration: line-through;
+  color: #888;
 }
 
 footer {
+  margin-top: 40px;
   text-align: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.8);
-  border-top: 3px solid #ff0000;
+  font-size: 14px;
 }
 
-footer p {
-  margin: 0;
-  color: #ff0000;
+footer a {
+  color: #4CAF50;
+  text-decoration: none;
 }
 
-/* Profile Section */
-#profile img {
-  max-width: 150px;
-  max-height: 150px;
-  border-radius: 50%;
-  margin-bottom: 1rem;
+footer a:hover {
+  text-decoration: underline;
 }
 
-#profile input[type="file"] {
-  margin-bottom: 1rem;
+#theme-select {
+  display: block;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-#profile textarea {
-  resize: vertical;
-  height: 100px;
+#theme-select:hover {
+  background-color: #45a049;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  nav ul {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  nav ul li {
-    margin: 0.5rem 0;
-  }
-
-  #profile img {
-    max-width: 100px;
-    max-height: 100px;
-  }
+.dark {
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
-/* Focus Styles */
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-  outline: 2px solid #ff0000;
+.dark form {
+  background-color: #333;
+  color: #e0e0e0;
 }
 
-/* Dark and Light Theme Styles */
-body.dark {
-  background-color: #1a1a1a;
-  color: #f0f0f0;
+.dark button {
+  background-color: #2196F3;
 }
 
-body.light {
-  background-color: #f0f0f0;
-  color: #333;
+.dark button:hover {
+  background-color: #1e88e5;
 }
 
-body.light header {
-  background: #f0f0f0;
-  color: #333;
+.dark ul#task-list {
+  background-color: #333;
+  color: #e0e0e0;
 }
 
-body.light header h1 {
-  color: #333;
+.dark ul#task-list button {
+  background-color: #f44336;
 }
 
-body.light nav ul li a {
-  color: #333;
+.dark ul#task-list button:hover {
+  background-color: #e53935;
 }
 
-body.light .task-list ul li {
-  background: rgba(0, 0, 0, 0.1);
+.dark ul#task-list button:first-of-type {
+  background-color: #2196F3;
 }
 
-body.light footer {
-  background: #f0f0f0;
-  color: #333;
+.dark ul#task-list button:first-of-type:hover {
+  background-color: #1e88e5;
 }
 
-body.light footer p {
-  color: #333;
+.dark ul#task-list button:nth-of-type(2) {
+  background-color: #FFC107;
 }
 
-body.light .task-list button {
-  background: #ff4b4b;
+.dark ul#task-list button:nth-of-type(2):hover {
+  background-color: #ffb300;
 }
 
-body.light .task-list button:hover {
-  background: #ff1c1c;
-}
-
-body.light form button {
-  background-color: #ff4b4b;
-}
-
-body.light form button:hover {
-  background-color: #ff1c1c;
+.dark .hidden {
+  background-color: #121212;
+  color: #e0e0e0;
 }
