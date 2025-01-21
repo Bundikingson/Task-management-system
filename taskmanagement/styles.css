@@ -1,0 +1,163 @@
+/* General Styling */
+body {
+    font-family: "Georgia", serif;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #ff0000;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #ff0000;
+    text-shadow: 2px 2px 5px #000;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 0;
+  }
+  
+  nav ul li {
+    margin: 0 1rem;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  nav ul li a:hover {
+    color: #ffffff;
+  }
+  
+  main {
+    flex-grow: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  section {
+    background: rgba(0, 0, 0, 0.9);
+    margin: 1rem 0;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.4);
+  }
+  
+  h2 {
+    margin-top: 0;
+    color: #ff0000;
+    text-shadow: 1px 1px 3px #000;
+  }
+  
+  form label {
+    margin: 0.5rem 0 0.2rem;
+    display: block;
+  }
+  
+  form input, form textarea, form select, form button {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  form input, form textarea, form select {
+    background-color: #222;
+    color: #fff;
+  }
+  
+  form button {
+    background-color: #ff0000;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #aa0000;
+  }
+  
+  .task-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .task-list ul li {
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .task-list button {
+    background: #f05454;
+    border: none;
+    color: #ffffff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .task-list button:hover {
+    background: #d94343;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.8);
+    border-top: 3px solid #ff0000;
+  }
+  
+  footer p {
+    margin: 0;
+    color: #ff0000;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    nav ul li {
+      margin: 0.5rem 0;
+    }
+  }
+  
+  /* Focus Styles */
+  input:focus, select:focus, textarea:focus, button:focus {
+    outline: 2px solid #ff0000;
+  }
