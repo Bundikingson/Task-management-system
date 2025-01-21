@@ -1,103 +1,146 @@
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-let filteredTasks = 'all';
+// JavaScript for Task Management System
+
+// DOM Elements
+const dashboardSection = document.getElementById("dashboard");
+const tasksSection = document.getElementById("tasks");
+const settingsSection = document.getElementById("settings");
+const profileSection = document.getElementById("profile");
+const themeSelect = document.getElementById("theme");
+const taskList = document.getElementById("taskList");
+const profileImageInput = document.getElementById("profileImageInput");
+const profileImage = document.getElementById("profileImage");
+const bioInput = document.getElementById("bio");
+const totalTasks = document.getElementById("totalTasks");
+const completedTasks = document.getElementById("completedTasks");
+const pendingTasks = document.getElementById("pendingTasks");
+
+// Theme Toggle
+const currentTheme = localStorage.getItem("theme") || "dark";
+document.body.classList.add(currentTheme);
+themeSelect.value = currentTheme;
+
+themeSelect.addEventListener("change", (event) => {
+  const selectedTheme = event.target.value;
+  document.body.classList.remove("light", "dark");
+  document.body.classList.add(selectedTheme);
+  localStorage.setItem("theme", selectedTheme);
+});
+
+// Section Navigation
+const navLinks = document.querySelectorAll("nav ul li a");
+
+navLinks.forEach(link => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    const targetSection = event.target.getAttribute("href").substring(1);
+    showSection(targetSection);
+  });
+});
 
 function showSection(sectionId) {
-  // Hide all sections and show the one selected
-  document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
-  document.getElementById(sectionId).classList.remove('hidden');
+  dashboardSection.classList.add("hidden");
+  tasksSection.classList.add("hidden");
+  settingsSection.classList.add("hidden");
+  profileSection.classList.add("hidden");
+  
+  if (sectionId === "dashboard") {
+    dashboardSection.classList.remove("hidden");
+  } else if (sectionId === "tasks") {
+    tasksSection.classList.remove("hidden");
+  } else if (sectionId === "settings") {
+    settingsSection.classList.remove("hidden");
+  } else if (sectionId === "profile") {
+    profileSection.classList.remove("hidden");
+  }
 }
 
-function renderTasks() {
-  const taskList = document.getElementById('task-list');
-  taskList.innerHTML = ''; // Clear the list before re-rendering
-  const filtered = tasks.filter(task => {
-    if (filteredTasks === 'completed') return task.completed;
-    if (filteredTasks === 'pending') return !task.completed;
-    return true; // Show all tasks
-  });
+// Task Management
+const taskForm = document.getElementById("taskForm");
+const taskTitleInput = document.getElementById("taskTitle");
+const taskDescriptionInput = document.getElementById("taskDescription");
+const taskDueDateInput = document.getElementById("taskDueDate");
+const taskPriorityInput = document.getElementById("taskPriority");
+const taskStatusInput = document.getElementById("taskStatus");
 
-  // Render filtered tasks
-  filtered.forEach((task, index) => {
-    const taskItem = document.createElement('li');
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function displayTasks() {
+  taskList.innerHTML = "";
+  tasks.forEach((task, index) => {
+    const taskItem = document.createElement("li");
     taskItem.innerHTML = `
-      <span style="text-decoration: ${task.completed ? 'line-through' : 'none'}">${task.description} (Priority: ${task.priority})</span>
-      <button onclick="toggleTaskStatus(${index})">${task.completed ? 'Undo' : 'Complete'}</button>
-      <button onclick="editTask(${index})">Edit</button>
+      <span>${task.title}</span>
+      <span>${task.dueDate}</span>
+      <span>${task.priority}</span>
+      <span>${task.status}</span>
       <button onclick="deleteTask(${index})">Delete</button>
     `;
     taskList.appendChild(taskItem);
   });
 }
 
-function addTask(event) {
-  event.preventDefault(); // Prevent form submission
-  const taskInput = document.getElementById('task');
-  const prioritySelect = document.getElementById('priority');
+taskForm.addEventListener("submit", (event) => {
+  event.preventDefault();
   
-  const task = {
-    description: taskInput.value,
-    completed: false,
-    priority: prioritySelect.value
+  const newTask = {
+    title: taskTitleInput.value,
+    description: taskDescriptionInput.value,
+    dueDate: taskDueDateInput.value,
+    priority: taskPriorityInput.value,
+    status: taskStatusInput.value,
   };
-  
-  tasks.push(task); // Add task to the list
-  localStorage.setItem('tasks', JSON.stringify(tasks)); // Save to localStorage
-  renderTasks(); // Re-render tasks
-  taskInput.value = ''; // Clear input field
-  prioritySelect.value = 'low'; // Reset priority to 'low'
-}
 
-function toggleTaskStatus(index) {
-  tasks[index].completed = !tasks[index].completed; // Toggle task status
-  localStorage.setItem('tasks', JSON.stringify(tasks)); // Save to localStorage
-  renderTasks(); // Re-render tasks
-}
+  tasks.push(newTask);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  taskForm.reset();
+  displayTasks();
+  updateTaskStats();
+});
 
 function deleteTask(index) {
-  if (confirm('Are you sure you want to delete this task?')) {
-    tasks.splice(index, 1); // Remove task from the list
-    localStorage.setItem('tasks', JSON.stringify(tasks)); // Save to localStorage
-    renderTasks(); // Re-render tasks
+  tasks.splice(index, 1);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  displayTasks();
+  updateTaskStats();
+}
+
+function updateTaskStats() {
+  totalTasks.textContent = tasks.length;
+  completedTasks.textContent = tasks.filter(task => task.status === "Completed").length;
+  pendingTasks.textContent = tasks.filter(task => task.status !== "Completed").length;
+}
+
+displayTasks();
+updateTaskStats();
+
+// Profile Section
+const profilePictureInput = document.getElementById("profilePictureInput");
+const profilePicture = document.getElementById("profileImage");
+const bioText = document.getElementById("bioText");
+
+profilePictureInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      profilePicture.src = reader.result;
+      localStorage.setItem("profileImage", reader.result);
+    };
+    reader.readAsDataURL(file);
   }
+});
+
+const savedImage = localStorage.getItem("profileImage");
+if (savedImage) {
+  profilePicture.src = savedImage;
 }
 
-function editTask(index) {
-  const newDescription = prompt('Edit Task:', tasks[index].description);
-  if (newDescription !== null) {
-    tasks[index].description = newDescription; // Update task description
-    localStorage.setItem('tasks', JSON.stringify(tasks)); // Save to localStorage
-    renderTasks(); // Re-render tasks
-  }
-}
+bioInput.addEventListener("input", () => {
+  localStorage.setItem("bio", bioInput.value);
+});
 
-function saveProfile(event) {
-  event.preventDefault(); // Prevent form submission
-  const username = document.getElementById('username').value;
-  const email = document.getElementById('email').value;
-  alert(`Profile saved: ${username}, ${email}`); // Alert the user
+const savedBio = localStorage.getItem("bio");
+if (savedBio) {
+  bioInput.value = savedBio;
 }
-
-function saveSettings(event) {
-  event.preventDefault(); // Prevent form submission
-  const theme = document.getElementById('theme').value;
-  // Apply theme change
-  document.body.style.backgroundColor = theme === 'dark' ? '#000' : '#fff';
-  localStorage.setItem('theme', theme); // Save theme setting to localStorage
-}
-
-function filterTasks(status) {
-  filteredTasks = status; // Set filter criteria
-  renderTasks(); // Re-render tasks
-}
-
-function sortTasksByPriority() {
-  tasks.sort((a, b) => {
-    const priorityOrder = { low: 1, medium: 2, high: 3 };
-    return priorityOrder[b.priority] - priorityOrder[a.priority]; // Sort tasks by priority
-  });
-  localStorage.setItem('tasks', JSON.stringify(tasks)); // Save sorted tasks to localStorage
-  renderTasks(); // Re-render tasks
-}
-
-// Initial render of tasks when the page loads
-renderTasks();
